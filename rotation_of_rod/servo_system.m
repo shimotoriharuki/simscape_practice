@@ -1,6 +1,6 @@
 clear
 
-% 状態表現
+% 状態空間表現
 m = 0.1;
 d = 0.01;
 L = 0.1;
@@ -15,34 +15,27 @@ u = 0;
 x0 = [1; 0];
 x = x0;
 v = [0; 0];
-dt = 0.01;
 
-dx = A * x + B * u + v;
-y = C * x;
-
-r = 0;
-dz = r - y;
-z=0;
-z = z + dz * dt;
-xb = [x; z];
-
+% 拡大系
 Ab = [A zeros(2, 1); -C 0];
 Bb = [B; 0];
-dxb = Ab * [x; z] + Bb * u + [v; r]
-
 
 % 可制御性
 Uc = [Bb Ab*Bb Ab^2*Bb];
 det(Uc)
 
 % ゲインを求める
-p = [-1 -1+i -1-i];
+p = [-5 -1+1i -1-1i];
 K = place(Ab, Bb, p);
 F = [K(1) K(2)];
 k = -K(3);
 
+% シミュレーション
+dt = 0.01;
 t = 0 : dt : 5;
 z = 0;
+r = 0;
+
 x1 = [];
 x2 = [];
 for n = t
