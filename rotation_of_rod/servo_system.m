@@ -18,13 +18,16 @@ Bb = [B; 0];
 
 % 可制御性
 Uc = [Bb Ab*Bb Ab^2*Bb];
-det(Uc)
+det(Uc);
 
 % ゲインを求める
 p = [-5 -1+1i -1-1i];
-K = place(Ab, Bb, p);
-F = [K(1) K(2)]; %状態フィードバックゲイン
-k = -K(3);  % サーボ系のゲイン
+Gain = place(Ab, Bb, p);
+% Q = [10 0 0; 0 10 0; 0 0 10];
+% R = 10;
+% Gain = lqr(Ab, Bb, Q, R);
+f = [Gain(1) Gain(2)]; %状態フィードバックゲイン
+k = -Gain(3);  % サーボ系のゲイン
 
 % シミュレーション
 dt = 0.01;
@@ -42,7 +45,7 @@ for n = t
     dxb = Ab * [x; z] + Bb * u + [v; r];
     x = x + dxb(1:2, 1) * dt;
     z = z + dxb(3) * dt;
-    u = -F*x + k*z;
+    u = -f*x + k*z;
     
     x1 = [x1 x(1)];
     x2 = [x2 x(2)];
