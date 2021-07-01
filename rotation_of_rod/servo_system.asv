@@ -29,7 +29,7 @@ end
 % p = [-5 -1+1i -1-1i];
 % Gain = place(Ab, Bb, p);
 
-Q = [10 0 0; 0 0.1 0; 0 0 0.1];
+Q = [1 0 0; 0 10 0; 0 0 10];
 R = 10000;
 Gain = lqr(Ab, Bb, Q, R);
 
@@ -47,7 +47,6 @@ u = 0; % 入力の初期値
 
 x1 = [];
 x2 = [];
-u1 = [];
 x = x0;
 for n = t
     dxb = Ab * [x; z] + Bb * u + [v; r];
@@ -57,14 +56,8 @@ for n = t
     
     x1 = [x1 x(1)];
     x2 = [x2 x(2)];
-    u1 = [u1 u];
 
 end
 
-figure(1);
 plot(t, x1, t, x2)
-legend('θ', 'dθ')
-
-figure(2)
-plot(t, u1)
-legend('u')
+legend('
