@@ -1,0 +1,5 @@
+clear
+syms R L I(t) w(t) V;
+
+Id = diff(I, t);
+V = R*I + L*id
